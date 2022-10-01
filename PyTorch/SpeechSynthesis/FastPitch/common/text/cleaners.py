@@ -1,5 +1,4 @@
 """ adapted from https://github.com/keithito/tacotron """
-
 '''
 Cleaners are transformations that run over the input text at both training and eval time.
 
@@ -20,83 +19,82 @@ from .letters_and_numbers import normalize_letters_and_numbers
 from .numerical import normalize_numbers
 from .unidecoder import unidecoder
 
-
 # Regular expression matching whitespace:
 _whitespace_re = re.compile(r'\s+')
 
 
 def expand_abbreviations(text):
-    return normalize_abbreviations(text)
+  return normalize_abbreviations(text)
 
 
 def expand_numbers(text):
-    return normalize_numbers(text)
+  return normalize_numbers(text)
 
 
 def expand_acronyms(text):
-    return normalize_acronyms(text)
+  return normalize_acronyms(text)
 
 
 def expand_datestime(text):
-    return normalize_datestime(text)
+  return normalize_datestime(text)
 
 
 def expand_letters_and_numbers(text):
-    return normalize_letters_and_numbers(text)
+  return normalize_letters_and_numbers(text)
 
 
 def lowercase(text):
-    return text.lower()
+  return text.lower()
 
 
 def collapse_whitespace(text):
-    return re.sub(_whitespace_re, ' ', text)
+  return re.sub(_whitespace_re, ' ', text)
 
 
 def separate_acronyms(text):
-    text = re.sub(r"([0-9]+)([a-zA-Z]+)", r"\1 \2", text)
-    text = re.sub(r"([a-zA-Z]+)([0-9]+)", r"\1 \2", text)
-    return text
+  text = re.sub(r"([0-9]+)([a-zA-Z]+)", r"\1 \2", text)
+  text = re.sub(r"([a-zA-Z]+)([0-9]+)", r"\1 \2", text)
+  return text
 
 
 def convert_to_ascii(text):
-    return unidecoder(text)
+  return unidecoder(text)
 
 
 def basic_cleaners(text):
-    '''Basic pipeline that collapses whitespace without transliteration.'''
-    text = lowercase(text)
-    text = collapse_whitespace(text)
-    return text
+  '''Basic pipeline that collapses whitespace without transliteration.'''
+  text = lowercase(text)
+  text = collapse_whitespace(text)
+  return text
 
 
 def transliteration_cleaners(text):
-    '''Pipeline for non-English text that transliterates to ASCII.'''
-    text = convert_to_ascii(text)
-    text = lowercase(text)
-    text = collapse_whitespace(text)
-    return text
+  '''Pipeline for non-English text that transliterates to ASCII.'''
+  text = convert_to_ascii(text)
+  text = lowercase(text)
+  text = collapse_whitespace(text)
+  return text
 
 
 def english_cleaners(text):
-    '''Pipeline for English text, with number and abbreviation expansion.'''
-    text = convert_to_ascii(text)
-    text = lowercase(text)
-    text = expand_numbers(text)
-    text = expand_abbreviations(text)
-    text = collapse_whitespace(text)
-    return text
+  '''Pipeline for English text, with number and abbreviation expansion.'''
+  text = convert_to_ascii(text)
+  text = lowercase(text)
+  text = expand_numbers(text)
+  text = expand_abbreviations(text)
+  text = collapse_whitespace(text)
+  return text
 
 
 def english_cleaners_v2(text):
-    text = convert_to_ascii(text)
-    text = expand_datestime(text)
-    text = expand_letters_and_numbers(text)
-    text = expand_numbers(text)
-    text = expand_abbreviations(text)
-    text = spell_acronyms(text)
-    text = lowercase(text)
-    text = collapse_whitespace(text)
-    # compatibility with basic_english symbol set
-    text = re.sub(r'/+', ' ', text)
-    return text
+  text = convert_to_ascii(text)
+  text = expand_datestime(text)
+  text = expand_letters_and_numbers(text)
+  text = expand_numbers(text)
+  text = expand_abbreviations(text)
+  text = spell_acronyms(text)
+  text = lowercase(text)
+  text = collapse_whitespace(text)
+  # compatibility with basic_english symbol set
+  text = re.sub(r'/+', ' ', text)
+  return text

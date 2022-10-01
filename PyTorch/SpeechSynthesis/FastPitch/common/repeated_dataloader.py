@@ -28,32 +28,34 @@ from torch.utils.data.distributed import DistributedSampler
 
 
 class RepeatedDataLoader(DataLoader):
-    def __init__(self, repeats, *args, **kwargs):
-        self.repeats = repeats
-        super().__init__(*args, **kwargs)
 
-    def __iter__(self):
-        if self._iterator is None or self.repeats_done >= self.repeats:
-            self.repeats_done = 1
-            return super().__iter__()
-        else:
-            self.repeats_done += 1
-            return self._iterator
+  def __init__(self, repeats, *args, **kwargs):
+    self.repeats = repeats
+    super().__init__(*args, **kwargs)
+
+  def __iter__(self):
+    if self._iterator is None or self.repeats_done >= self.repeats:
+      self.repeats_done = 1
+      return super().__iter__()
+    else:
+      self.repeats_done += 1
+      return self._iterator
 
 
 class RepeatedDistributedSampler(DistributedSampler):
-    def __init__(self, repeats, *args, **kwargs):
-        self.repeats = repeats
-        assert self.repeats <= 10000, "Too many repeats overload RAM."
-        super().__init__(*args, **kwargs)
 
-    def __iter__(self):
-        # Draw indices for `self.repeats` epochs forward
-        start_epoch = self.epoch
-        iters = []
-        for r in range(self.repeats):
-            self.set_epoch(start_epoch + r)
-            iters.append(super().__iter__())
-        self.set_epoch(start_epoch)
+  def __init__(self, repeats, *args, **kwargs):
+    self.repeats = repeats
+    assert self.repeats <= 10000, "Too many repeats overload RAM."
+    super().__init__(*args, **kwargs)
 
-        return itertools.chain.from_iterable(iters)
+  def __iter__(self):
+    # Draw indices for `self.repeats` epochs forward
+    start_epoch = self.epoch
+    iters = []
+    for r in range(self.repeats):
+      self.set_epoch(start_epoch + r)
+      iters.append(super().__iter__())
+    self.set_epoch(start_epoch)
+
+    return itertools.chain.from_iterable(iters)

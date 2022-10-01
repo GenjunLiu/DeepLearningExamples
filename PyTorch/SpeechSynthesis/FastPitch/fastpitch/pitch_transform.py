@@ -16,7 +16,7 @@ import torch
 
 
 def pitch_transform_custom(pitch, pitch_lens):
-    """Apply a custom pitch transformation to predicted pitch values.
+  """Apply a custom pitch transformation to predicted pitch values.
 
     This sample modification linearly increases the pitch throughout
     the utterance from 0.5 of predicted pitch to 1.5 of predicted pitch.
@@ -35,13 +35,15 @@ def pitch_transform_custom(pitch, pitch_lens):
         Modified pitch (in Hz).
     """
 
-    weights = torch.arange(pitch.size(1), dtype=torch.float32, device=pitch.device)
+  weights = torch.arange(pitch.size(1),
+                         dtype=torch.float32,
+                         device=pitch.device)
 
-    # The weights increase linearly from 0.0 to 1.0 in every i-th row
-    # in the range (0, pitch_lens[i])
-    weights = weights.unsqueeze(0) / pitch_lens.unsqueeze(1)
+  # The weights increase linearly from 0.0 to 1.0 in every i-th row
+  # in the range (0, pitch_lens[i])
+  weights = weights.unsqueeze(0) / pitch_lens.unsqueeze(1)
 
-    # Shift the range from (0.0, 1.0) to (0.5, 1.5)
-    weights += 0.5
+  # Shift the range from (0.0, 1.0) to (0.5, 1.5)
+  weights += 0.5
 
-    return pitch * weights
+  return pitch * weights
