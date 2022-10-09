@@ -25,6 +25,7 @@ export OMP_NUM_THREADS=1
 : ${PHONE:=true}
 # Enable energy conditioning
 : ${ENERGY:=true}
+: ${SYMBOL_SET:=english_basic}
 : ${TEXT_CLEANERS:=english_cleaners_v2}
 # Add dummy space prefix/suffix is audio is not precisely trimmed
 : ${APPEND_SPACES:=false}
@@ -68,6 +69,7 @@ ARGS+=" --validation-freq 10"
 ARGS+=" --kl-loss-start-epoch 0"
 ARGS+=" --kl-loss-warmup-epochs $KL_LOSS_WARMUP"
 ARGS+=" --text-cleaners $TEXT_CLEANERS"
+ARGS+=" --symbol-set $SYMBOL_SET"
 ARGS+=" --n-speakers $NSPEAKERS"
 
 [ "$AMP" = "true" ]                && ARGS+=" --amp"

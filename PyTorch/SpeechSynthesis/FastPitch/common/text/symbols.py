@@ -30,6 +30,12 @@ def get_symbols(symbol_set='english_basic'):
     _letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
     symbols = list(_punctuation + _math + _special + _accented +
                    _letters) + _arpabet
+  elif symbol_set == 'chinese_pinyin_basic':
+    _pad = '_'
+    _punctuation = '!\'(),.:;? '
+    _special = '-'
+    _letters = 'abcdefghijklmnopqrstuvwxyz12345'
+    symbols = list(_pad + _special + _punctuation + _letters) + _arpabet
   else:
     raise Exception("{} symbol set does not exist".format(symbol_set))
 
@@ -37,7 +43,9 @@ def get_symbols(symbol_set='english_basic'):
 
 
 def get_pad_idx(symbol_set='english_basic'):
-  if symbol_set in {'english_basic', 'english_basic_lowercase'}:
+  if symbol_set in {
+      'english_basic', 'english_basic_lowercase', 'chinese_pinyin_basic'
+  }:
     return 0
   else:
     raise Exception("{} symbol set not used yet".format(symbol_set))

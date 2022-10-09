@@ -20,7 +20,10 @@ import re
 
 import pynvml
 
-pynvml.nvmlInit()
+try:
+  pynvml.nvmlInit()
+except:
+  pass
 
 
 def systemGetDriverVersion():

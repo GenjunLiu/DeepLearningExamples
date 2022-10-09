@@ -183,7 +183,7 @@ def parse_args(parser):
                     help='Paths to validation filelists')
   data.add_argument('--text-cleaners',
                     nargs='*',
-                    default=['english_cleaners'],
+                    default=['english_cleaners_v2'],
                     type=str,
                     help='Type of text cleaners for input text')
   data.add_argument('--symbol-set',

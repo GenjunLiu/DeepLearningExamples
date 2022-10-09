@@ -98,3 +98,10 @@ def english_cleaners_v2(text):
   # compatibility with basic_english symbol set
   text = re.sub(r'/+', ' ', text)
   return text
+
+
+def chinese_pinyin_cleaners(text):
+  text = convert_to_ascii(text)
+  text = lowercase(text)
+  text = collapse_whitespace(text)
+  return text

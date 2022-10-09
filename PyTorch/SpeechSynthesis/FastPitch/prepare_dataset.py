@@ -58,6 +58,15 @@ def parse_args(parser):
   parser.add_argument('--extract-pitch',
                       action='store_true',
                       help='Extract pitch')
+  parser.add_argument('--text-cleaners',
+                      nargs='*',
+                      default=['english_cleaners_v2'],
+                      type=str,
+                      help='Type of text cleaners for input text')
+  parser.add_argument('--symbol-set',
+                      type=str,
+                      default='english_basic',
+                      help='Define symbol set for input text')
   parser.add_argument(
       '--save-alignment-priors',
       action='store_true',
@@ -141,7 +150,8 @@ def main():
 
     dataset = TTSDataset(args.dataset_path,
                          filelist,
-                         text_cleaners=['english_cleaners_v2'],
+                         text_cleaners=args.text_cleaners,
+                         symbol_set=args.symbol_set,
                          n_mel_channels=args.n_mel_channels,
                          p_arpabet=0.0,
                          n_speakers=args.n_speakers,
